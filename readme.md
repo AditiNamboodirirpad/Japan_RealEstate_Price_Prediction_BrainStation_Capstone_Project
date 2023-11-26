@@ -128,7 +128,7 @@ The dataset consists of the following fields:
     
     c.PartIII_Basic_Modelling.ipynb
     
-    d.PartIV_Advanced_Modelling
+    d.PartIV_Advanced_Modelling.ipynb
     
     e.**Data** : All the dataset CSVs
     
@@ -145,7 +145,7 @@ To run this entire project download all the files in the **Notebooks** folder in
 1. PartI_Initial_Dataset_merging_and_splitting.ipynb
 2. PartII__PreliminaryEDA_AdvancedEDA.ipynb
 3. PartIII_Basic_Modelling.ipynb
-4. PartIV_Advanced_Modelling
+4. PartIV_Advanced_Modelling.ipynb
 
 The data files(CSVs) for each of these notebboks is present in the **'Data'** folder:
 Part I: PartI_Initial_Dataset_merging_and_splitting.ipynb
