@@ -305,7 +305,6 @@ rsa==4.9
 Rtree==1.0.1
 ruamel.yaml==0.17.21
 ruamel.yaml.clib==0.2.6
-ruamel-yaml-conda==0.15.80
 s3fs==2023.10.0
 scikit-image==0.19.3
 scikit-learn==1.2.1
