@@ -261,7 +261,6 @@ PyHamcrest==2.0.2
 PyJWT==2.4.0
 pylint==2.16.2
 pylint-venv==2.3.0
-pyls-spyder==0.4.0
 PyMeeus==0.5.12
 PyNaCl==1.5.0
 pyodbc==4.0.34
@@ -277,7 +276,6 @@ pytest==7.1.2
 python-dateutil==2.8.2
 python-lsp-black==1.2.1
 python-lsp-jsonrpc==1.0.0
-python-lsp-server==1.7.1
 python-slugify==5.0.2
 python-snappy==0.6.1
 pytoolconfig==1.2.5
