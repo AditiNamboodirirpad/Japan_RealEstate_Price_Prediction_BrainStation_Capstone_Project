@@ -1,3 +1,5 @@
+#import statements
+
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -6,18 +8,18 @@ import pickle
 import xgboost as xgb
 import plotly.express as px
 import time
-#import plotly.graph_objs as go
 
 
-# Load the dataset
-file_path = "C:/Users/Thekku/Desktop/BrainStation/Capstone Project/Streamlit/cleaned_dataset.csv"
+
+# Load the main dataset and model pickle file
+file_path = "./Streamlit/cleaned_dataset.csv"
 df = pd.read_csv(file_path)
-model_path = "C:/Users/Thekku/Desktop/BrainStation/Capstone Project/Streamlit/xgboost_model.pkl"
+model_path = "./Streamlit/xgboost_model.pkl"
 with open(model_path, 'rb') as file:
     model = pickle.load(file)
 
 def main():
-    #st.title("Real Estate App")
+    #Sidebar navigation
     st.sidebar.title("Navigation")
     pages = st.sidebar.radio("Go to", ("Home", "Visualizations", "Prediction of Trade Price"))
     
@@ -42,37 +44,37 @@ def main():
     elif pages == "Visualizations":
       
         st.subheader("Visualize Factors affecting the Trade Prices", divider='rainbow')
-        selected_column = st.selectbox("Visualizations with Trade Prices", ['Prefectures','Time To Nearest Station', 'Floor Plan', 'Area in Square Feet', 'Construction Year'], index=None,placeholder="Select a visualization")  
-        # Debugging statement to display the selected column
-        #st.write(f"Selected Column: {selected_column}")
+        #Select box for different visualization with Trade Price from cleaned_dataset.csv
+        selected_column = st.selectbox("Visualizations with Trade Prices", ['Prefectures','Time To Nearest Station', 'Floor Plan', 'Area in Square Feet', 'Construction Year'], index=None,placeholder="Select a visualization") 
         if not selected_column:
-           st.warning('Please select the values!', icon="⚠️")                
+           st.warning('Please select the values!', icon="⚠️")
+           #For multiselect visualizations             
         elif selected_column in ['Prefectures']:            
-            prefecturemeans = pd.read_csv("C:/Users/Thekku/Desktop/BrainStation/Capstone Project/Streamlit/prefecturemeans.csv")
-            # Sort the bars by the y-values (TradePriceCAD) in descending order
+            prefecturemeans = pd.read_csv("./Streamlit/prefecturemeans.csv")
+            # Sorting the bars by the y-values (TradePriceCAD) in descending order
             figpre = px.bar(prefecturemeans, x='PrefectureName', y='TradePriceCAD', title=f'Trade Price by {selected_column}')
             figpre.update_xaxes(categoryorder='total descending')
             st.plotly_chart(figpre)
 
         elif selected_column in ['Floor Plan']:
-            floorplanmeans = pd.read_csv("C:/Users/Thekku/Desktop/BrainStation/Capstone Project/Streamlit/floorplanmeans.csv")
+            floorplanmeans = pd.read_csv("./Streamlit/floorplanmeans.csv")
             figflo = px.bar(floorplanmeans, x='FloorPlan', y='TradePriceCAD', title=f'Trade Price by {selected_column}')
             figflo.update_xaxes(categoryorder='total descending')
             st.plotly_chart(figflo)
 
            
         elif selected_column in ['Time To Nearest Station']: 
-            stationemeans = pd.read_csv("C:/Users/Thekku/Desktop/BrainStation/Capstone Project/Streamlit/stationemeans.csv")
+            stationemeans = pd.read_csv("./Streamlit/stationemeans.csv")
             figsta = px.scatter(stationemeans, x='TimeToNearestStation', y='TradePriceCAD', title=f'Trade Price by {selected_column}')
             st.plotly_chart(figsta)
 
         elif selected_column in ['Area in Square Feet']:
-            areameans = pd.read_csv("C:/Users/Thekku/Desktop/BrainStation/Capstone Project/Streamlit/areameans.csv")
+            areameans = pd.read_csv("./Streamlit/areameans.csv")
             figarea = px.scatter(areameans, x='SurveyedAreaSqFt', y='TradePriceCAD', title=f'Trade Price by {selected_column}')                
             st.plotly_chart(figarea)
         
         elif selected_column in ['Construction Year']:
-            constructionmeans = pd.read_csv("C:/Users/Thekku/Desktop/BrainStation/Capstone Project/Streamlit/constructionmeans.csv")
+            constructionmeans = pd.read_csv("./Streamlit/constructionmeans.csv")
             figcon = px.line(constructionmeans, x='ConstructionYear', y='TradePriceCAD', title=f'Trade Price by {selected_column}')                
             st.plotly_chart(figcon)
     
@@ -85,7 +87,7 @@ def main():
         time_bins = st.slider("Select Time to Nearest Station", min_value=df['TimeToNearestStation'].astype('int64').min(), max_value=df['TimeToNearestStation'].astype('int64').max(),value= (df['TimeToNearestStation'].astype('int64').min(),df['TimeToNearestStation'].astype('int64').max()),step=1)
         area_bins =  st.slider("Select Areain Square Feet", min_value=df['SurveyedAreaSqFt'].astype('int64').min(), max_value=df['SurveyedAreaSqFt'].astype('int64').max(), value=(df['SurveyedAreaSqFt'].astype('int64').min(),df['SurveyedAreaSqFt'].astype('int64').max()) ,step=1)
         construction_bins =  st.slider("Select Construction Year", min_value=df['ConstructionYear'].astype('int64').min(), max_value=df['ConstructionYear'].astype('int64').max(),value=(df['ConstructionYear'].astype('int64').min(),df['ConstructionYear'].astype('int64').max()) ,step=1)
-        # Filter the data based on selections
+        # Filtering the data based on selections
         filtered_data = df[
             (df['PrefectureName'].isin(selected_prefectures)) &
             (df['FloorPlan'].isin(selected_floor_plans)) &
@@ -98,6 +100,7 @@ def main():
 
         ]
        
+       #Plot
         fig = px.bar(
             filtered_data,
             x='PrefectureName',
@@ -123,133 +126,33 @@ def main():
         
         # Dropdown for PrefectureName
         selected_prefecture_prediction = st.selectbox("Prefecture", list(df['PrefectureName'].unique()), index=None,placeholder= "Select a Prefecture Name")
-
         # Dropdown for FloorPlan
         selected_prefecture_floorplan = st.selectbox("Floor Plan",list(df['FloorPlan'].unique()), index=None,placeholder= "Select a Floor Plan")
-    
-        # Dropdown for SurveyedAreaM2
         # Textbox for SurveyedAreaM2
         sq_ft = st.number_input("Area in Square Feet", min_value=0, max_value=None, value=0, step=1)
-        selected_prefecture_SurveyedAreaM2 = sq_ft/10.764
-        
-        # Dropdown for ConstructionYear
+        selected_prefecture_SurveyedAreaM2 = sq_ft/10.764        
+        # Textbox for ConstructionYear
         selected_prefecture_ConstructionYear = st.number_input("Construction Year",min_value=0, max_value=None, value=0, step=1)
-
-        # # Dropdown for TimeToNearestStation
+        # Textbox for TimeToNearestStation
         selected_prefecture_TimeToNearestStation = st.number_input("Time To the nearest Station",min_value=0, max_value=None, value=0, step=1)  
             
             
-        
-        
-            
-            # # Grouping selected values
-            # selected_values_group = {
-            #     "PrefectureName": selected_prefecture_prediction,
-            #     "FloorPlan": selected_prefecture_floorplan,
-            #     "SurveyedAreaM2": selected_prefecture_SurveyedAreaM2,
-            #     "ConstructionYear": selected_prefecture_ConstructionYear,
-            #     "RenovationStatus": selected_prefecture_RenovationStatus
-            # }
-
-            # selected_prefecture_CityPlanningCategory = None
-
-            # # Check if all values are selected
-            # if all(value is not None for value in selected_values_group.values()):
-            #     # Calculate mode for CityPlanningCategory
-            #     # Grouping the data by 'FloorPlan' and 'SurveyedAreaM2_Bin'
-            #     grouped_data = df.groupby(['PrefectureName','FloorPlan', 'SurveyedAreaM2','ConstructionYear','RenovationStatus'])
-                
-            #     if grouped_data.size().eq(0).all():
-            #         # If there are no groups, fill with 'Commercial'
-            #         selected_prefecture_CityPlanningCategory = "Commercial Zone"
-            #     else:
-            #         # If there are groups, calculate mode
-            #         mode_result = grouped_data["CityPlanningCategory"].agg(lambda x: x.mode().iloc[0] if not x.mode().empty else "Commercial Zone").reset_index().iloc[:, -1]
-
-            #     st.write(f"Mode of City Planning Category: {selected_prefecture_CityPlanningCategory}")
-            # else:
-            #     st.warning("Please select values for all columns before calculating the mode.")
-
-
-        #  # Dropdown for CityPlanningCategory
+        #  Few defaults so that users doesn't have to enter everything
         selected_prefecture_CityPlanningCategory = "Commercial Zone"
-
-        # # Dropdown for MaxBuildingCoverageRatioPercent
         selected_prefecture_MaxBuildingCoverageRatioPercent = 60
-
-        # # Dropdown for MaxFloorAreaRatioPercent
         selected_prefecture_MaxFloorAreaRatioPercent = 200
-
-        # Dropdown for RenovationStatus
-        #selected_prefecture_RenovationStatus = st.selectbox("Renovation Status", list(df['RenovationStatus'].unique()),index=None,placeholder= "Select a Renovation Status")
-        selected_prefecture_RenovationStatus ="Not yet"
-
-        
-
-            
+        selected_prefecture_RenovationStatus ="Not yet"    
         selected_prefecture_FutureUsePurpose = "House"
         selected_prefecture_CurrentUsage = "House"
         selected_prefecture_TransactionYear = 2023
         selected_prefecture_TransactionYearQuarter = 1
         selected_prefecture_BuildingStructure="RC"
 
-    #     prefectures = ['Hokkaido', 'Aomori', 'Iwate', 'Miyagi', 'Akita', 'Yamagata',
-    #            'Fukushima', 'Ibaraki', 'Tochigi', 'Gunma', 'Saitama', 'Chiba',
-    #            'Tokyo', 'Kanagawa', 'Niigata', 'Toyama', 'Ishikawa', 'Fukui',
-    #            'Yamanashi', 'Nagano', 'Gifu', 'Shizuoka', 'Aichi', 'Mie', 'Shiga',
-    #            'Kyoto', 'Osaka', 'Hyogo', 'Nara', 'Wakayama', 'Tottori',
-    #            'Shimane', 'Okayama', 'Hiroshima', 'Yamaguchi', 'Tokushima',
-    #            'Kagawa', 'Ehime', 'Kochi', 'Fukuoka', 'Saga', 'Nagasaki',
-    #            'Kumamoto', 'Oita', 'Miyazaki', 'Kagoshima', 'Okinawa']
 
-    #     for prefecture in prefectures:
-    #         exec(f'value_{prefecture} = 1 if selected_prefecture_prediction == "{prefecture}" else 0')
-            
-
-    #     floorplans= ['4LDK', '2LDK', '3LDK', '1LDK', '1DK', '1K', '2DK', '3DK', '1R',
-    #    'Open Floor', '2K', '2LDK+S', '3LDK+S', '1LDK+S', '2DK+S', '5LDK',
-    #    '4DK', 'Other', '4LDK+S', '3K', '4K']
         
-    #     for floorplan in floorplans:
-    #         exec(f'value_{floorplan} = 1 if selected_prefecture_floorplan == "{floorplan}" else 0')
-
-    #     building_structures=['RC', 'SRC', 'S', 'Other', 'SRC, RC', 'RC, S', 'SRC, S']
-
-    #     for building_structure in building_structures:
-    #         exec(f'value_{building_structure} = 1 if elected_prefecture_BuildingStructure == "{building_structure}" else 0')
-
-    #     currentusages=['House', 'Office', 'Shop', 'Other']
-
-    #     for currentusage in currentusages:
-    #         exec(f'valuec_{currentusage} = 1 if selected_prefecture_CurrentUsage == "{currentusage}" else 0')
-        
-    #     futureusages=['House', 'Office', 'Shop', 'Other']
-
-    #     for futureusage in futureusages:
-    #         exec(f'valuef_{futureusages} = 1 if selected_prefecture_FutureUsePurpose == "{futureusages}" else 0')
-        
-    #     citys= ['Neighborhood Commercial Zone',
-    #    'Category I Exclusively Low-story Residential Zone',
-    #    'Category I Residential Zone', 'Commercial Zone',
-    #    'Category I Exclusively Medium-high Residential Zone',
-    #    'Quasi-industrial Zone', 'Category II Residential Zone',
-    #    'Quasi-residential Zone',
-    #    'Category II Exclusively Low-story Residential Zone',
-    #    'Category II Exclusively Medium-high Residential Zone',
-    #    'Industrial Zone', 'Exclusively Industrial Zone',
-    #    'Non-divided City Planning Area', 'Urbanization Control Area',
-    #    'Quasi-city Planning Area']
-        
-    #     for city in citys:
-    #         exec(f'value_{city} = 1 if selected_prefecture_CityPlanningCategory == "{city}" else 0')
-        
-    #     rss=['Not yet', 'Done']
-    #     for rs in rss:
-    #         exec(f'value_{rs} = 1 if selected_prefecture_RenovationStatus == "{rs}" else 0')    
-        
-        # Assuming xgboost_model is loaded as mentioned in a previous response
+        #Predict button
         if st.button("Predict"):
-           
+                #Inputting into the model. This is because I have a lot of dummies. 100 odd columns
                 input_data = pd.DataFrame({
                     'TimeToNearestStation': [selected_prefecture_TimeToNearestStation],
                     'SurveyedAreaM2':[selected_prefecture_SurveyedAreaM2],
@@ -359,30 +262,20 @@ def main():
                     time.sleep(1)
                     predicted_trade_price = model.predict(input_data)
 
-                # Assuming `predicted_trade_price` is the variable containing the predicted TradePriceYen
-
-                
-
                 import locale
 
                 # Set the locale to format numbers as Canadian dollars
-                locale.setlocale(locale.LC_ALL, 'en_CA.UTF-8')  # Change 'en_CA.UTF-8' to your desired locale
-
-                # Convert to CAD using an exchange rate of 0.0092
+                locale.setlocale(locale.LC_ALL, 'en_CA.UTF-8')
+                # Converting to CAD using an exchange rate of 0.0092
                 predicted_trade_price_cad = predicted_trade_price * 0.0092
-
-                # Format the CAD value as currency with 2 decimal places
+                # Formatting the CAD value as currency with 2 decimal places
                 formatted_price_cad = locale.currency(round(predicted_trade_price_cad[0], 2), grouping=True)
-
-                # Display the formatted value in CAD
                 st.header(f":green[**Trade Price in CAD:** {formatted_price_cad}]")
 
                 # Set the locale to format numbers as Japanese yen
-                locale.setlocale(locale.LC_ALL, 'ja_JP.UTF-8')  # Change 'ja_JP.UTF-8' to your desired locale
-
+                locale.setlocale(locale.LC_ALL, 'ja_JP.UTF-8')
                 # Display the predicted TradePriceYen rounded to the nearest integer
                 formatted_price_yen = locale.currency(round(predicted_trade_price[0]), grouping=True)
-
                 # Display the formatted value in Japanese yen
                 st.header(f"**Trade Price in Yen:** {formatted_price_yen}")
 
