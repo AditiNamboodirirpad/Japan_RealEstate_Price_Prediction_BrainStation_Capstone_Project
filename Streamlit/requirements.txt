@@ -47,7 +47,7 @@ click==8.0.4
 click-plugins==1.1.1
 cligj==0.7.2
 cloudpickle==2.2.1
-clyent==1.2.2
+clyent==1.2.1
 cmdstanpy==1.2.0
 colorama==0.4.6
 colorcet==3.0.1
