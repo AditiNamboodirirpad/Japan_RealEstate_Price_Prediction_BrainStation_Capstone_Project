@@ -371,7 +371,6 @@ traitlets==5.7.1
 transformers==4.24.0
 tsdownsample==0.1.2
 Twisted==22.2.0
-twisted-iocpsupport==1.0.2
 typing_extensions==4.7.1
 tzdata==2023.3
 tzlocal==5.2
