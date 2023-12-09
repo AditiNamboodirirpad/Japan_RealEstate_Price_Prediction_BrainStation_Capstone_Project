@@ -12,9 +12,9 @@ import time
 
 
 # Load the main dataset and model pickle file
-file_path = "./cleaned_dataset.csv"
+file_path = "./Streamlit/cleaned_dataset.csv"
 df = pd.read_csv(file_path)
-model_path = "./xgboost_model.pkl"
+model_path = "./Streamlit/xgboost_model.pkl"
 with open(model_path, 'rb') as file:
     model = pickle.load(file)
 
@@ -50,31 +50,31 @@ def main():
            st.warning('Please select the values!', icon="⚠️")
            #For multiselect visualizations             
         elif selected_column in ['Prefectures']:            
-            prefecturemeans = pd.read_csv("./prefecturemeans.csv")
+            prefecturemeans = pd.read_csv("./Streamlit/prefecturemeans.csv")
             # Sorting the bars by the y-values (TradePriceCAD) in descending order
             figpre = px.bar(prefecturemeans, x='PrefectureName', y='TradePriceCAD', title=f'Trade Price by {selected_column}')
             figpre.update_xaxes(categoryorder='total descending')
             st.plotly_chart(figpre)
 
         elif selected_column in ['Floor Plan']:
-            floorplanmeans = pd.read_csv("./floorplanmeans.csv")
+            floorplanmeans = pd.read_csv("./Streamlit/floorplanmeans.csv")
             figflo = px.bar(floorplanmeans, x='FloorPlan', y='TradePriceCAD', title=f'Trade Price by {selected_column}')
             figflo.update_xaxes(categoryorder='total descending')
             st.plotly_chart(figflo)
 
            
         elif selected_column in ['Time To Nearest Station']: 
-            stationemeans = pd.read_csv("./stationemeans.csv")
+            stationemeans = pd.read_csv("./Streamlit/stationemeans.csv")
             figsta = px.scatter(stationemeans, x='TimeToNearestStation', y='TradePriceCAD', title=f'Trade Price by {selected_column}')
             st.plotly_chart(figsta)
 
         elif selected_column in ['Area in Square Feet']:
-            areameans = pd.read_csv("./areameans.csv")
+            areameans = pd.read_csv("./Streamlit/areameans.csv")
             figarea = px.scatter(areameans, x='SurveyedAreaSqFt', y='TradePriceCAD', title=f'Trade Price by {selected_column}')                
             st.plotly_chart(figarea)
         
         elif selected_column in ['Construction Year']:
-            constructionmeans = pd.read_csv("./constructionmeans.csv")
+            constructionmeans = pd.read_csv("./Streamlit/constructionmeans.csv")
             figcon = px.line(constructionmeans, x='ConstructionYear', y='TradePriceCAD', title=f'Trade Price by {selected_column}')                
             st.plotly_chart(figcon)
     
