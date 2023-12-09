@@ -24,7 +24,7 @@ def main():
     pages = st.sidebar.radio("Go to", ("Home", "Visualizations", "Prediction of Trade Price"))
     
     if pages == "Home":
-        st.image('img1.jpg')
+        st.image('./Streamlit/img1.jpg')
         st.header("Prediction of real estate prices in Japan", divider='rainbow')
         st.write("Welcome to the Japan Real Estate Analytics and Prediction App!")
         st.write("Through this Streamlit application, we can visualize and explore trends and factors that have shaped the Japanese real estate landscape over the 15-year period. This app also provides a prediction of real estate prices based on different factors!")
