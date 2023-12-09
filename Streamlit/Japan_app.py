@@ -39,7 +39,7 @@ def main():
                         3. Used different models to predict trade prices.
         """)
         st.subheader("More Info", divider='rainbow')
-        st.image('qrFinal.png', caption="Link to this project repo in GitHub", width=300)
+        st.image('./Streamlit/qrFinal.png', caption="Link to this project repo in GitHub", width=300)
         
     elif pages == "Visualizations":
       
