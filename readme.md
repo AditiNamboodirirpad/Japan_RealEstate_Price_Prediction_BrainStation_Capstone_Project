@@ -1,5 +1,7 @@
 # Capstone Project: Real Estate Transaction Analysis in Japan
 
+Streamlit app link(Cloud hosted): https://japan-real-estate-price-prediction-app-2023.streamlit.app/
+
 Dataset link: https://drive.google.com/drive/folders/13jdFIeTlVA9fCj06bkrgu9X9e6v5k5Zo?usp=sharing
 
 Author: Aditi Namboodiripad
@@ -132,9 +134,19 @@ The dataset consists of the following fields:
     
     e.**Data** : All the dataset CSVs
     
-4. **References** : Readme file with link to the original dataset from Kaggle.
-5. **readme.md** : Details about this project.
-6. **requirements.txt** : Required packages and others with their versions.
+3. **References** : Readme file with link to the original dataset from Kaggle.
+4. **Streamlit** :
+5. 
+    a.Contains datasets to run the streamlit app.
+   
+    b.**Japan_app.py** is the app python file.
+   
+    c.**xgboost_model.pkl** is the model pickle file.
+   
+    d.It also contains requirements text file.
+   
+7. **readme.md** : Details about this project.
+8. **packages.txt** : Required to support locales in cloud.
      
 ## Notebook Usage Instructions
 
@@ -171,8 +183,9 @@ Part IV: PartIV_Advanced_Modelling.ipynb
 * Random Forest and XGBoost Regressor has been performed with cross-validation and hyperparameter tuning to improve model performance.
 * The models has been evaluated using standard metrics Mean Absolute Percentage Error(MAPE) and R2.
 
-#### Note: The streamlit files and instructions will be added soon.
+Streamlit
 
+* To run locally run Japan_app.py file and change the paths of the datasets and pickle file accordingly.
 
 
 ## Acknowledgements and Source
